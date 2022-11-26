@@ -192,22 +192,3 @@ void push_depth_to_stack (Stack *depth_stack, int child_count) {
 	forget_data (&(depth_node -> data));
 	delete_node (&depth_node);
 }
-
-void print_test_tree (Tree *tree) {
-	printf ("\n------------------------------------------------------------------------------------------\n");
-	Node *root = get_root_node (tree);
-	display_node_details (root);
-
-	Node *node;
-
-	node = *(root -> address_list -> item_addresses + 1); // A
-	display_node_details (node);
-
-	node = *(node -> address_list -> item_addresses + 1); // C
-	display_node_details (node);
-
-	node = *(root -> address_list -> item_addresses + 2); // B
-	display_node_details (node);
-
-	printf ("------------------------------------------------------------------------------------------\n\n");
-}

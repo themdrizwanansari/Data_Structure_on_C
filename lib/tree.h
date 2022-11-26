@@ -28,6 +28,5 @@ Node* get_parent_node (Node*);
 void append_child_node (Node*, Node*);
 void push_tree_node_to_stack (Stack*, Node*);
 void push_depth_to_stack (Stack*, int);
-void print_test_tree (Tree*);
 
 #endif
