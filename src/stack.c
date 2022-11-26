@@ -5,20 +5,24 @@ Stack *create_stack () {
 }
 
 void delete_stack (Stack *stack) {
-    delete_linked_list (stack);
+	delete_linked_list (stack);
 }
 
 void display_stack (Stack *stack) {
-	printf ("<Stack>(%d) := ", stack -> size);
+	printf ("<Stack>(%d) :=\n", stack -> size);
+
+	if (stack -> size == 0) {
+		exit (1);
+	}
 
 	Node *node = stack -> first_node;
 
 	for (int i = 0; i < stack -> size; i++) {
-		if (i != 0) {
-			printf ("\n|__*__| => ");
+		if (i < stack -> size) {
+			printf ("\t|__*__| => ");
 		}
 
-		display_node (node);
+		display_node_details (node);
 		node = *(node -> address_list -> item_addresses + 1);
 	}
 
@@ -26,11 +30,12 @@ void display_stack (Stack *stack) {
 }
 
 void push (Stack *stack, Node *node) {
-    attach_node_at_first (stack, node);
+	attach_node_at_first (stack, node);
+	stack -> first_node -> type = N_Stack;
 }
 
 Node *pop (Stack *stack) {
-    Node *node = stack -> first_node;
-    detach_node_from_first (stack, false);
-    return node;
+	Node *node = duplicate_node (stack -> first_node);
+	detach_node_from_first (stack, true);
+	return node;
 }

@@ -16,7 +16,7 @@ Node *create_node (Node_Type type) {
 			case N_Stack:
 			case N_Queue:
 			case N_Tree:
-				node -> address_list = create_list (1);
+				node -> address_list = create_list (2);
 				break;
 			default:
 				break;
@@ -27,9 +27,14 @@ Node *create_node (Node_Type type) {
 }
 
 Node* duplicate_node (Node *node) {
-	Node *new_node = (Node*) malloc (sizeof (Node));
+	if (node == NULL) {
+		perror ("Given source node does not exist!\n");
+		exit (1);
+	}
 
-	if (node != NULL) {
+	Node *new_node = create_node (node -> type);//(Node*) malloc (sizeof (Node));
+
+	if (new_node != NULL) {
 		new_node -> type = node -> type;
 		new_node -> name = duplicate_string (node -> name);
 		new_node -> data = duplicate_data (node -> data);
@@ -71,7 +76,7 @@ void display_node (Node *node) {
 
 void display_node_details (Node *node) {
 	if (node == NULL) {
-		perror ("Error! => Node doesn't exist.\n");
+		perror ("Display_Node->Error! => Node doesn't exist.\n");
 		exit (1);
 	}
 
@@ -97,9 +102,13 @@ void display_node_details (Node *node) {
 			break;
 	}
 
+	printf ("] Address => [");
+	printf ("%p", node);
 	printf ("] Name => [\"");
 	display_string (node -> name);
 	printf ("\"] Data => [");
 	display_data (node -> data);
-	printf ("]\n");
+	printf ("] ");
+	display_list_addresses (node -> address_list);
+	//printf ("\n");
 }

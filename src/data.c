@@ -37,6 +37,10 @@ void delete_data (Data *data) {
 }
 
 Data* duplicate_data (Data *data) {
+	if (data == NULL) {
+		return NULL;
+	}
+
 	return create_data (data -> type, data -> size, data -> address);
 }
 
