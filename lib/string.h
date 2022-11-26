@@ -19,6 +19,7 @@ typedef struct STRING {
 String* create_string (int, char*);					// creates string object // pass NULL as argument if empty string to be created
 void delete_string (String*);						// frees string object from memory
 void display_string (String*);						// prints only string part
+void display_raw_string (int, char*);				// prints string // takes length and address pointer
 void display_string_properties (String*);			// prints whole description
 char* char_array_to_pointer (int, char*);			// converts character array to string object
 void concatenate_strings (int, ...);				// concatenates multiple string objects

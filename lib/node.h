@@ -8,7 +8,16 @@
 
 // ---------- x ----------
 
+typedef enum NODE_TYPE {
+	N_Undefined
+	, N_LinkedList
+	, N_Stack
+	, N_Queue
+	, N_Tree
+} Node_Type;
+
 typedef struct NODE {
+	Node_Type type;
 	String* name;
 	List* address_list;
 	Data* data;
@@ -16,7 +25,8 @@ typedef struct NODE {
 
 // ---------- x ----------
 
-Node* create_node (String*);
+Node* create_node (Node_Type);
+void set_node_name (Node*, int, char*);
 void delete_node (Node*);
 void display_node (Node*);
 

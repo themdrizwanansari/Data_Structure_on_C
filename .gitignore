@@ -4,4 +4,6 @@
 *.txt
 
 # ignore extra directories
+sample/
+old_codes/
 .vscode/

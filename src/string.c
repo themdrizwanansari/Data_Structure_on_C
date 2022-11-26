@@ -37,8 +37,12 @@ void display_string_properties (String *string) {
 }
 
 void display_string (String *string) {
-	for (int i = 0; i < string -> length; i++) {
-		printf ("%c", *(string -> address + i));
+	display_raw_string (string -> length, string -> address);
+}
+
+void display_raw_string (int length, char *address) {
+	for (int i = 0; i < length; i++) {
+		printf ("%c", *(address + i));
 	}
 }
 
