@@ -1,0 +1,7 @@
+# ignore all executable files
+*.o
+*.out
+*.txt
+
+# ignore extra directories
+.vscode/
