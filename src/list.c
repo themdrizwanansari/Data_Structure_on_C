@@ -3,13 +3,20 @@
 List *create_list (int size) {
 	List *list = (List*) malloc (sizeof (List));
 
-	if (list != NULL) {
-		list -> item_count = 0;
-		list -> item_addresses = NULL;
+	if (list == NULL) {
+		return NULL;
+	}
 
+	list -> item_count = 0;
+	list -> item_addresses = NULL;
+
+	if (size < 10) {
 		while (size--) {
 			add_to_list (list, NULL, false);
 		}
+	} else {
+		list -> item_count = size;
+		list -> item_addresses = (void**) malloc (list -> item_count * sizeof (void*));
 	}
 
 	return list;

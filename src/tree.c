@@ -25,8 +25,50 @@ void delete_tree (Tree **tree_address) {
 		return;
 	}
 
-	//Tree *tree = *tree_address;
-	//tree = NULL;
+	Tree *tree = *tree_address;
+	List *list = create_list (tree -> node_count);
+	int i, list_index = 0;
+	Node *node, *child_node, *x_node;
+	Stack *stack = create_stack ();
+
+	node = get_root_node (tree);
+	push_tree_node_to_stack (stack, node);
+
+	while (stack -> size > 0) {
+		x_node = pop (stack);
+		node = x_node -> data -> address;
+
+		*(list -> item_addresses + list_index++) = node;
+
+		forget_data (&(x_node -> data));
+		forget_list (&(x_node -> address_list));
+		delete_node (&x_node);
+
+		i = node -> address_list -> item_count;
+
+		while (--i) {
+			if (i < 0) {
+				break;
+			}
+
+			child_node = *(node -> address_list -> item_addresses + i);
+			push_tree_node_to_stack (stack, child_node);
+		}
+	}
+
+	delete_stack (&stack);
+
+	for (i = 0; i < list -> item_count; i++) {
+		node = *(list -> item_addresses + i);
+		forget_list (&(node -> address_list));
+		delete_node (&node);
+	}
+
+	forget_list (&list);
+	delete_list (&list);
+
+	node = NULL;
+	tree = NULL;
 	ERASE (tree_address);
 }
 
@@ -60,13 +102,13 @@ void display_tree (Tree *tree) {
 		node = x_node -> data -> address;
 
 		if (depth != 0) {
-			for (i = 0; i < depth; i++) {
+			for (i = 1; i < depth; i++) {
 				printf ("\t|");
 			}
 
 			printf ("\n");
 
-			for (i = 1; i < depth; i++) {
+			for (i = 2; i < depth; i++) {
 				printf ("\t|");
 			}
 
@@ -83,15 +125,16 @@ void display_tree (Tree *tree) {
 		x = depth_stack -> first_node -> data -> address;
 		-- *x;
 
-		if (*x <= 0) {
+		i = node -> address_list -> item_count;
+		child_count = i - 1;
+
+		if (*x <= 0 && child_count == 0) {
 			depth_node = pop (depth_stack);
 			forget_data (&(depth_node -> data));
 			forget_list (&(depth_node -> address_list));
 			delete_node (&depth_node);
 		}
 
-		i = node -> address_list -> item_count;
-		child_count = i - 1;
 		depth = depth_stack -> size;
 
 		if (child_count > 0) {
@@ -158,7 +201,7 @@ Node* get_parent_node (Node *node) {
 	return NULL;
 }
 
-void append_child_node (Node *parent_node, Node *child_node) {
+void append_child_node (Tree *tree, Node *parent_node, Node *child_node) {
 	if (parent_node == NULL) {
 		perror ("Parent Node does not Exist to add child node!");
 		return;
@@ -172,6 +215,7 @@ void append_child_node (Node *parent_node, Node *child_node) {
 	child_node = duplicate_node (child_node);
 	*(child_node -> address_list -> item_addresses + 0) = parent_node;
 	add_to_list (parent_node -> address_list, child_node, false);
+	++ (tree -> node_count);
 }
 
 void push_tree_node_to_stack (Stack *stack, Node *node) {

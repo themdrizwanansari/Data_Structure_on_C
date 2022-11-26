@@ -5,7 +5,7 @@ To parse various languages
 
 ### Dependency Diagram =>
 
-![Image](./xml/media/library_structure.png "Library Structure")
+![Image](./media/library_structure.png "Library Structure")
 
 ---
 
@@ -16,7 +16,7 @@ To parse various languages
 
 #### **Included Libraries**
 
-![Image](./xml/media/string.png "String")
+![Image](./media/string.png "String")
 
 - Includes standard C library header files.
 	- #include <stdio.h> => input / output
@@ -144,7 +144,7 @@ ___
 
 #### **Included Libraries**
 
-![Image](./xml/media/data.png "Data")
+![Image](./media/data.png "Data")
 
 #### **Data Structure**
 
@@ -252,7 +252,7 @@ ___
 
 #### **Included Libraries**
 
-![Image](./xml/media/list.png "List")
+![Image](./media/list.png "List")
 
 #### **Data Structure**
 
@@ -351,7 +351,7 @@ ___
 
 #### **Included Libraries**
 
-![Image](./xml/media/node.png "Node")
+![Image](./media/node.png "Node")
 
 #### **Data Structure**
 
@@ -453,7 +453,7 @@ ___
 
 #### **Included Libraries**
 
-![Image](./xml/media/linked_list.png "Linked List")
+![Image](./media/linked_list.png "Linked List")
 
 #### **Data Structure**
 
@@ -550,7 +550,7 @@ ___
 
 #### **Included Libraries**
 
-![Image](./xml/media/stack.png "Stack")
+![Image](./media/stack.png "Stack")
 
 #### **Data Structure**
 
@@ -620,7 +620,7 @@ ___
 
 #### **Included Libraries**
 
-![Image](./xml/media/queue.png "Queue")
+![Image](./media/queue.png "Queue")
 
 #### **Data Structure**
 
@@ -691,7 +691,7 @@ ___
 
 #### **Included Libraries**
 
-![Image](./xml/media/tree.png "Tree")
+![Image](./media/tree.png "Tree")
 
 #### **Data Structure**
 
@@ -830,7 +830,7 @@ ___
 
 #### **Included Libraries**
 
-![Image](./xml/media/graph.png "Graph")
+![Image](./media/graph.png "Graph")
 
 #### **Data Structure**
 

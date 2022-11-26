@@ -116,7 +116,7 @@ int main (int argc, char *argv[]) {
 	delete_node (&node1);
 */
 	Node *node;
-	Node *p_node;
+	Node *p_node, *root_node;
 	//printf ("gotcha\n");
 	Tree *tree = create_tree ();
 
@@ -125,32 +125,53 @@ int main (int argc, char *argv[]) {
 	set_root_node (tree, node);
 	delete_node (&node);
 
-	p_node = get_root_node (tree);
+	root_node = get_root_node (tree);
+	p_node = root_node;
 
 	node = create_node (N_Tree);
 	set_node_name (node, 1, "A");
-	append_child_node (p_node, node);
+	append_child_node (tree, p_node, node);
 	delete_node (&node);
 
 	node = create_node (N_Tree);
 	set_node_name (node, 1, "B");
-	append_child_node (p_node, node);
+	append_child_node (tree, p_node, node);
 	delete_node (&node);
 
 	p_node = get_Nth_child_node (p_node, 1);
 
 	node = create_node (N_Tree);
 	set_node_name (node, 1, "C");
-	append_child_node (p_node, node);
+	append_child_node (tree, p_node, node);
 	delete_node (&node);
-
-//	display_node_details (p_node);
-
-	//p_node = get_Nth_child_node (p_node, 1);
 
 	node = create_node (N_Tree);
 	set_node_name (node, 1, "D");
-	append_child_node (p_node, node);
+	append_child_node (tree, p_node, node);
+	delete_node (&node);
+
+	p_node = get_Nth_child_node (root_node, 2);
+
+	node = create_node (N_Tree);
+	set_node_name (node, 1, "E");
+	append_child_node (tree, p_node, node);
+	delete_node (&node);
+
+	node = create_node (N_Tree);
+	set_node_name (node, 1, "F");
+	append_child_node (tree, p_node, node);
+	delete_node (&node);
+
+	p_node = get_Nth_child_node (p_node, 1);
+
+	node = create_node (N_Tree);
+	set_node_name (node, 1, "G");
+	append_child_node (tree, p_node, node);
+	delete_node (&node);
+
+	node = create_node (N_Tree);
+	set_node_name (node, 1, "H");
+	append_child_node (tree, p_node, node);
 	delete_node (&node);
 
 	display_tree (tree);
