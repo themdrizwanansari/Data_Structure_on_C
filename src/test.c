@@ -1,5 +1,7 @@
 #include "../lib/stack.h"
 
+#include "../lib/queue.h"
+
 int main (int argc, char *argv[]) {
 	String *string1 = create_string (5, "Hello");
 	String *string2 = create_string (5, "World");
@@ -35,6 +37,7 @@ int main (int argc, char *argv[]) {
 	Linked_List *linked_list = create_linked_list ();
 //	display_linked_list (linked_list);
 	Stack *stack = create_stack ();
+	Queue *queue = create_queue ();
 
 	Node *node = create_node (N_LinkedList);
 	set_node_name (node, 5, "node1");
@@ -44,6 +47,7 @@ int main (int argc, char *argv[]) {
 //	Node *node2 = duplicate_node (node);
 //	display_node_details (node2);
 	push (stack, node);
+	enqueue (queue, node);
 	attach_node_at_last (linked_list, node);
 	delete_node (node);
 //	display_linked_list (linked_list);
@@ -52,6 +56,7 @@ int main (int argc, char *argv[]) {
 	set_node_name (node, 5, "node2");
 //	display_node_details (node);
 	push (stack, node);
+	enqueue (queue, node);
 	attach_node_at_last (linked_list, node);
 	delete_node (node);
 //	display_linked_list (linked_list);
@@ -60,6 +65,7 @@ int main (int argc, char *argv[]) {
 	set_node_name (node, 5, "node3");
 	//display_node (node);
 	push (stack, node);
+	enqueue (queue, node);
 	attach_node_at_last (linked_list, node);
 	delete_node (node);
 //	display_linked_list (linked_list);
@@ -82,7 +88,24 @@ int main (int argc, char *argv[]) {
 	delete_linked_list (linked_list);
 
 	display_stack (stack);
+	Node *node1 = pop (stack);
+	display_stack (stack);
+	node1 = pop (stack);
+	display_stack (stack);
+	node1 = pop (stack);
+	display_stack (stack);
 	delete_stack (stack);
+
+
+	display_queue (queue);
+	node1 = dequeue (queue);
+	display_queue (queue);
+	node1 = dequeue (queue);
+	display_queue (queue);
+	node1 = dequeue (queue);
+	display_queue (queue);
+
+	delete_queue (queue);
 
 	return 0;
 }

@@ -12,7 +12,8 @@ void display_stack (Stack *stack) {
 	printf ("<Stack>(%d) :=\n", stack -> size);
 
 	if (stack -> size == 0) {
-		exit (1);
+		perror ("Stack is Empty!");
+		return;
 	}
 
 	Node *node = stack -> first_node;
