@@ -33,8 +33,8 @@ Node *create_node (Node_Type type) {
 
 Node* duplicate_node (Node *node) {
 	if (node == NULL) {
-		perror ("Given source node does not exist!\n");
-		exit (1);
+		perror ("Node does not exist to Duplicate!\n");
+		return NULL;
 	}
 
 	Node *new_node = create_node (node -> type);
@@ -92,7 +92,7 @@ void display_node_details (Node *node) {
 		return;
 	}
 
-	printf ("Type => [");
+	printf ("Type : [");
 
 	switch (node -> type) {
 		case N_Undefined:
@@ -114,11 +114,11 @@ void display_node_details (Node *node) {
 			break;
 	}
 
-	printf ("] Address => [");
+	printf ("] Address : [");
 	printf ("%p", node);
-	printf ("] Name => [\"");
+	printf ("] Name : [\"");
 	display_string (node -> name);
-	printf ("\"] Data => [");
+	printf ("\"] Data : [");
 	display_data (node -> data);
 	printf ("] ");
 	display_list_addresses (node -> address_list);

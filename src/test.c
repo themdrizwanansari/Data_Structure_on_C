@@ -126,25 +126,33 @@ int main (int argc, char *argv[]) {
 	delete_node (&node);
 
 	p_node = get_root_node (tree);
+
 	node = create_node (N_Tree);
 	set_node_name (node, 1, "A");
 	append_child_node (p_node, node);
 	delete_node (&node);
 
-//	p_node = get_Nth_child_node (p_node, 1);
 	node = create_node (N_Tree);
 	set_node_name (node, 1, "B");
 	append_child_node (p_node, node);
 	delete_node (&node);
 
-//	display_node_details (p_node);
-/*
 	p_node = get_Nth_child_node (p_node, 1);
+
 	node = create_node (N_Tree);
 	set_node_name (node, 1, "C");
 	append_child_node (p_node, node);
 	delete_node (&node);
-*/
+
+//	display_node_details (p_node);
+
+	//p_node = get_Nth_child_node (p_node, 1);
+
+	node = create_node (N_Tree);
+	set_node_name (node, 1, "D");
+	append_child_node (p_node, node);
+	delete_node (&node);
+
 	display_tree (tree);
 	delete_tree (&tree);
 

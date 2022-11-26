@@ -4,6 +4,7 @@ Linked_List *create_linked_list () {
 	Linked_List *linked_list = (Linked_List*) malloc (sizeof (Linked_List));
 
 	if (linked_list != NULL) {
+		linked_list -> name = NULL;
 		linked_list -> size = 0;
 		linked_list -> first_node = NULL;
 		linked_list -> last_node = NULL;
@@ -26,7 +27,7 @@ void delete_linked_list (Linked_List **linked_list_address) {
 	while (node != NULL) {
 		old_node = node;
 		node = *(node -> address_list -> item_addresses + 1);
-		forget_list (old_node -> address_list);
+		forget_list (&(old_node -> address_list));
 		delete_node (&old_node);
 	}
 
@@ -59,7 +60,7 @@ void attach_node_at_last (Linked_List *linked_list, Node *node) {
 		linked_list -> last_node = new_node;
 	}
 
-	++ linked_list -> size;	// not guranteed -- to be fixed
+	++ linked_list -> size;																			// not guranteed -- to be fixed
 }
 
 void attach_node_at_first (Linked_List *linked_list, Node *node) {
@@ -143,7 +144,7 @@ void detach_node_from_first (Linked_List *linked_list, bool node_delete_needed) 
 	-- linked_list -> size;																			// decrease node count
 
 	if (node_delete_needed) {
-		forget_list (node -> address_list);
+		forget_list (&(node -> address_list));
 		delete_node (&node);
 	}
 }
@@ -174,7 +175,7 @@ void detach_node_from_last (Linked_List *linked_list, bool node_delete_needed) {
 	-- linked_list -> size;																			// decrease node count
 
 	if (node_delete_needed) {
-		forget_list (node -> address_list);
+		forget_list (&(node -> address_list));
 		delete_node (&node);
 	}
 }

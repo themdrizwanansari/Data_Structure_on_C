@@ -8,6 +8,7 @@
 // ---------- x ----------
 
 typedef struct LINKED_LIST {
+	String* name;
 	int size;
 	Node* first_node;
 	Node* last_node;

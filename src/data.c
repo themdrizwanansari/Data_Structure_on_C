@@ -13,29 +13,47 @@ Data *create_data (Data_Type data_type, int block_size, void *address) {
 		data -> address = NULL;
 	}
 
-	if (data_type != DT_Undefined && block_size > 0) {
+	if (block_size > 0) {
 		data -> type = data_type;
 		data -> size = block_size;
 		data -> address = malloc (block_size);
 
 		if (data -> address != NULL) {
-			data -> address = memcpy (data -> address, address, block_size);
+			if (data_type == DT_Address) {
+				data -> address = address;
+			} else {
+				data -> address = memcpy (data -> address, address, block_size);
+			}
 		}
 	}
 
 	return data;
 }
 
-void delete_data (Data **data_address) {
+void forget_data (Data **data_address) {
 	if (*data_address == NULL) {
-		//perror ("Data does not exist to delete!");
+		// perror ("Data does not exist to delete!");
 		return;
 	}
 
 	Data *data = *data_address;
 
 	if (data -> address != NULL) {
-		ERASE (&data -> address);
+		data -> address = NULL;
+		data -> type = DT_Undefined;
+	}
+}
+
+void delete_data (Data **data_address) {
+	if (*data_address == NULL) {
+		// perror ("Data does not exist to delete!");
+		return;
+	}
+
+	Data *data = *data_address;
+
+	if (data -> address != NULL) {
+		ERASE (&(data -> address));
 	}
 
 	data = NULL;
@@ -51,20 +69,35 @@ Data* duplicate_data (Data *data) {
 }
 
 void display_data (Data *data) {
-	if (data != NULL) {
-		switch (data -> type) {
-			case DT_Binary:
-				display_binary_data (data -> size, (BYTE*) data -> address);
-				break;
-			case DT_Integer:
-				printf ("%d", *((int*) data -> address));
-				break;
-			case DT_String:
-				display_raw_string (data -> size, data -> address);
-				break;
-			default:
-				break;
-		}
+	if (data == NULL) {
+		// perror ("Data does not exist to display!");
+		return;
+	}
+
+	if (data -> address == NULL) {
+		// perror ("Address does not exist to display!");
+		printf ("N/A");
+		return;
+	}
+
+	switch (data -> type) {
+		case DT_Undefined:
+			printf ("N/A");
+			break;
+		case DT_Address:
+			printf ("%p", data -> address);
+			break;
+		case DT_Binary:
+			display_binary_data (data -> size, (BYTE*) data -> address);
+			break;
+		case DT_Integer:
+			printf ("%d", *((int*) data -> address));
+			break;
+		case DT_String:
+			display_raw_string (data -> size, data -> address);
+			break;
+		default:
+			break;
 	}
 }
 

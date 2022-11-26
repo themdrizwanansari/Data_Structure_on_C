@@ -9,7 +9,20 @@ void delete_stack (Stack **stack_address) {
 }
 
 void display_stack (Stack *stack) {
-	printf ("<Stack>(%d) :=\n", stack -> size);
+	if (stack == NULL) {
+		perror ("Stack does not exist to display!");
+		return;
+	}
+
+	printf ("Stack (%d)", stack -> size);
+
+	if (stack -> name != NULL) {
+		printf (" <");
+		display_string (stack -> name);
+		printf (">");
+	}
+
+	printf (":=\n");
 
 	if (stack -> size == 0) {
 		perror ("Stack is Empty!");
@@ -32,11 +45,15 @@ void display_stack (Stack *stack) {
 
 void push (Stack *stack, Node *node) {
 	attach_node_at_first (stack, node);
-	stack -> first_node -> type = N_Stack;
+	stack -> first_node -> type = node -> type;
 }
 
 Node *pop (Stack *stack) {
+	Node *x_node = stack -> first_node;
 	Node *node = duplicate_node (stack -> first_node);
+
+	forget_data (&(x_node -> data));
 	detach_node_from_first (stack, true);
+
 	return node;
 }

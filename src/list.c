@@ -16,6 +16,11 @@ List *create_list (int size) {
 }
 
 List* duplicate_list (List *old_list) {
+	if (old_list == NULL) {
+		// perror ("List does not exist to Duplicate!");
+		return NULL;
+	}
+
 	List *new_list = create_list (old_list -> item_count);
 
 	if (new_list != NULL) {
@@ -27,19 +32,22 @@ List* duplicate_list (List *old_list) {
 	return new_list;
 }
 
-void forget_list (List *list) {
-	if (list == NULL) {
-		perror ("Can't Delete...List does not exist to Forget!\n");
+void forget_list (List **list_address) {
+	if (*list_address == NULL) {
+		// perror ("List does not exist to Forget!");
 		return;
 	}
 
-	list -> item_count = 0;
-	list -> item_addresses = NULL;
+	List *list = *list_address;
+
+	for (int i = 0; i < list -> item_count; i++) {
+		*(list -> item_addresses + i) = NULL;
+	}
 }
 
 void delete_list (List **list_address) {
 	if (*list_address == NULL) {
-		perror ("Can't Delete...List does not exist to Delete!\n");
+		// perror ("List does not exist to Delete!");
 		return;
 	}
 
@@ -82,7 +90,7 @@ void display_list (List *list) {
 	int i;
 	Data *data;
 
-	printf ("<List> (%d) := [", list -> item_count);
+	printf ("List (%d) : [", list -> item_count);
 
 	for (i = 0; i < list -> item_count; i++) {
 		data = *(list -> item_addresses + i);
@@ -98,15 +106,20 @@ void display_list (List *list) {
 }
 
 void display_list_addresses (List *list) {
+	if (list == NULL) {
+		// perror ("List does not exist to display!");
+		return;
+	}
+
 	if (list -> item_count == 0) {
-		perror ("List is Empty!");
+		// perror ("List is Empty to display!");
 		return;
 	}
 
 	int i;
 	void *address;
 
-	printf ("<List> (%d) := [", list -> item_count);
+	printf ("List (%d) : [", list -> item_count);
 
 	for (i = 0; i < list -> item_count; i++) {
 		address = *(list -> item_addresses + i);

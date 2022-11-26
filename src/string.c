@@ -21,6 +21,10 @@ String* create_string (int length, char *str) {
 }
 
 String* duplicate_string (String *old_string) {
+	if (old_string == NULL) {
+		return NULL;
+	}
+
 	String *new_string = (String*) malloc (sizeof (String));
 
 	if (new_string != NULL) {
@@ -42,7 +46,7 @@ String* duplicate_string (String *old_string) {
 
 void delete_string (String **string_address) {
 	if (*string_address == NULL) {
-		perror ("String is empty to delete!");
+		// perror ("String is empty to delete!");
 		return;
 	}
 
@@ -63,6 +67,11 @@ void display_string_properties (String *string) {
 }
 
 void display_string (String *string) {
+	if (string == NULL) {
+		// perror ("String does not exist to display!");
+		return;
+	}
+
 	display_raw_string (string -> length, string -> address);
 }
 

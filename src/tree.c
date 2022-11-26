@@ -25,8 +25,8 @@ void delete_tree (Tree **tree_address) {
 		return;
 	}
 
-	Tree *tree = *tree_address;
-	tree = NULL;
+	//Tree *tree = *tree_address;
+	//tree = NULL;
 	ERASE (tree_address);
 }
 
@@ -41,44 +41,76 @@ void display_tree (Tree *tree) {
 		return;
 	}
 
+	int i, child_count;
+	int depth = 0, *x;
+	Node *node, *child_node, *x_node;
+	Node *depth_node;
 	Stack *stack = create_stack ();
-	Node *node = get_root_node (tree);
-	//int level = 0;
-	int i;
-	//display_node_details (node);
-	//push (stack, node);
-	display_node_details (node);
-	display_node_details (*(node -> address_list -> item_addresses + 2));
-	display_node_details (*(node -> address_list -> item_addresses + 1));
-	//push (stack, *(node -> address_list -> item_addresses + 2));
-	//push (stack, *(node -> address_list -> item_addresses + 1));
-	//display_stack (stack);
+	Stack *depth_stack = create_stack ();
 
+	stack -> name = create_string (10, "Node Stack");
+	depth_stack -> name = create_string (11, "Depth Stack");
 
-	//while (stack -> size != 0) {
-	//	node = pop (stack);
-		//display_node_details (node);
+	node = get_root_node (tree);
+	push_tree_node_to_stack (stack, node);
+	push_depth_to_stack (depth_stack, 0);
 
-		if (node == NULL) {
-			//continue;
+	while (stack -> size > 0) {
+		x_node = pop (stack);
+		node = x_node -> data -> address;
+
+		if (depth != 0) {
+			for (i = 0; i < depth; i++) {
+				printf ("\t|");
+			}
+
+			printf ("\n");
+
+			for (i = 1; i < depth; i++) {
+				printf ("\t|");
+			}
+
+			printf ("\t+--->");
 		}
-		//display_node_details (node);
+
+		display_node (node);
+		printf ("\n");
+
+		forget_data (&(x_node -> data));
+		forget_list (&(x_node -> address_list));
+		delete_node (&x_node);
+
+		x = depth_stack -> first_node -> data -> address;
+		-- *x;
+
+		if (*x <= 0) {
+			depth_node = pop (depth_stack);
+			forget_data (&(depth_node -> data));
+			forget_list (&(depth_node -> address_list));
+			delete_node (&depth_node);
+		}
+
 		i = node -> address_list -> item_count;
-		//printf ("%d addresses\n", i);
+		child_count = i - 1;
+		depth = depth_stack -> size;
 
-		if (i <= 1) {
-			//continue;
+		if (child_count > 0) {
+			push_depth_to_stack (depth_stack, child_count);
+			depth = depth_stack -> size;
 		}
 
-		while (--i) {	// (i = 0) => parent address - will be ignored
-			//display_node_details (*(node -> address_list -> item_addresses + i));
-			//push (stack, *(node -> address_list -> item_addresses + i));
-		}
+		while (--i) {
+			if (i < 0) {
+				break;
+			}
 
-		
-	//}
+			child_node = *(node -> address_list -> item_addresses + i);
+			push_tree_node_to_stack (stack, child_node);
+		}
+	}
 
 	node = NULL;
+	delete_stack (&depth_stack);
 	delete_stack (&stack);
 }
 
@@ -140,4 +172,42 @@ void append_child_node (Node *parent_node, Node *child_node) {
 	child_node = duplicate_node (child_node);
 	*(child_node -> address_list -> item_addresses + 0) = parent_node;
 	add_to_list (parent_node -> address_list, child_node, false);
+}
+
+void push_tree_node_to_stack (Stack *stack, Node *node) {
+	Node *stack_node = create_node (N_Stack);
+	stack_node -> name = duplicate_string (node -> name);
+	stack_node -> data = create_data (DT_Address, sizeof (void*), node);
+
+	push (stack, stack_node);
+	forget_data (&(stack_node -> data));
+	delete_node (&stack_node);
+}
+
+void push_depth_to_stack (Stack *depth_stack, int child_count) {
+	Node *depth_node = create_node (N_Stack);
+	depth_node -> data = create_data (DT_Integer, sizeof (int), &child_count);
+
+	push (depth_stack, depth_node);
+	forget_data (&(depth_node -> data));
+	delete_node (&depth_node);
+}
+
+void print_test_tree (Tree *tree) {
+	printf ("\n------------------------------------------------------------------------------------------\n");
+	Node *root = get_root_node (tree);
+	display_node_details (root);
+
+	Node *node;
+
+	node = *(root -> address_list -> item_addresses + 1); // A
+	display_node_details (node);
+
+	node = *(node -> address_list -> item_addresses + 1); // C
+	display_node_details (node);
+
+	node = *(root -> address_list -> item_addresses + 2); // B
+	display_node_details (node);
+
+	printf ("------------------------------------------------------------------------------------------\n\n");
 }
