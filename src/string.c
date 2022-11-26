@@ -20,6 +20,26 @@ String* create_string (int length, char *str) {
 	return string;
 }
 
+String* duplicate_string (String *old_string) {
+	String *new_string = (String*) malloc (sizeof (String));
+
+	if (new_string != NULL) {
+		new_string -> length = 0;
+		new_string -> address = NULL;
+	}
+
+	if (old_string -> length > 0 && old_string -> address != NULL) {
+		new_string -> length = old_string -> length;
+		new_string -> address = malloc (old_string -> length);
+
+		if (new_string -> address != NULL) {
+			new_string -> address = memcpy (new_string -> address, old_string -> address, new_string -> length);
+		}
+	}
+
+	return new_string;
+}
+
 void delete_string (String *string) {
 	if (string != NULL) {
 		if (string -> address != NULL) {

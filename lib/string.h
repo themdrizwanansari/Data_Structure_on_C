@@ -17,6 +17,7 @@ typedef struct STRING {
 // ---------- x ----------
 
 String* create_string (int, char*);					// creates string object // pass NULL as argument if empty string to be created
+String* duplicate_string (String*);
 void delete_string (String*);						// frees string object from memory
 void display_string (String*);						// prints only string part
 void display_raw_string (int, char*);				// prints string // takes length and address pointer

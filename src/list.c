@@ -8,11 +8,23 @@ List *create_list (int size) {
 		list -> item_addresses = NULL;
 
 		while (size--) {
-			add_to_list (list, NULL);
+			add_to_list (list, NULL, false);
 		}
 	}
 
 	return list;
+}
+
+List* duplicate_list (List *old_list) {
+	List *new_list = create_list (old_list -> item_count);
+
+	if (new_list != NULL) {
+		for (int i = 0; i < new_list -> item_count; i++) {
+			*(new_list -> item_addresses + i) = *(old_list -> item_addresses + i);
+		}
+	}
+
+	return new_list;
 }
 
 void delete_list (List *list) {
@@ -29,9 +41,20 @@ void delete_list (List *list) {
 	}
 }
 
-void add_to_list (List *list, Data *data) {
+void add_to_list (List *list, Data *data, bool data_copy_needed) {
+	if (list == NULL) {
+		perror ("List not created\n");
+		exit (1);
+	}
+
 	list -> item_addresses = (void**) realloc (list -> item_addresses, (list -> item_count + 1) * sizeof (void*));
-	*(list -> item_addresses + list -> item_count) = create_new_data_from_old_data (data);
+	
+	if (data_copy_needed) {
+		*(list -> item_addresses + list -> item_count) = duplicate_data (data);
+	} else {
+		*(list -> item_addresses + list -> item_count) = data;
+	}
+
 	++ list -> item_count;
 }
 

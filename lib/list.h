@@ -15,8 +15,9 @@ typedef struct LIST {
 // ---------- x ----------
 
 List* create_list (int);
+List* duplicate_list (List*);
 void delete_list (List*);
-void add_to_list (List*, Data*);
+void add_to_list (List*, Data*, bool);
 void display_list (List*);
 void list_append (List*, int, void*);
 

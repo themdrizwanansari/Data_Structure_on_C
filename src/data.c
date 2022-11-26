@@ -36,28 +36,25 @@ void delete_data (Data *data) {
 	}
 }
 
-Data* create_new_data_from_old_data (Data *data) {
+Data* duplicate_data (Data *data) {
 	return create_data (data -> type, data -> size, data -> address);
 }
 
 void display_data (Data *data) {
-	if (data == NULL) {
-		perror ("Data is empty");
-		exit (1);
-	}
-
-	switch (data -> type) {
-		case DT_Binary:
-			display_binary_data (data -> size, (BYTE*) data -> address);
-			break;
-		case DT_Integer:
-			printf ("%d", *((int*) data -> address));
-			break;
-		case DT_String:
-			display_raw_string (data -> size, data -> address);
-			break;
-		default:
-			break;
+	if (data != NULL) {
+		switch (data -> type) {
+			case DT_Binary:
+				display_binary_data (data -> size, (BYTE*) data -> address);
+				break;
+			case DT_Integer:
+				printf ("%d", *((int*) data -> address));
+				break;
+			case DT_String:
+				display_raw_string (data -> size, data -> address);
+				break;
+			default:
+				break;
+		}
 	}
 }
 
