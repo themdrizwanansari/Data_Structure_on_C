@@ -12,10 +12,26 @@ Linked_List *create_linked_list () {
 	return linked_list;
 }
 
-void delete_linked_list (Linked_List *linked_list) {
-    if (linked_list != NULL) {
-        free (linked_list);
-    }
+void delete_linked_list (Linked_List **linked_list_address) {
+	if (*linked_list_address == NULL) {
+		perror ("Linked List does not exist to delete!");
+		return;
+	}
+
+	Linked_List *linked_list = *linked_list_address;
+
+	Node *node = linked_list -> first_node;
+	Node *old_node;
+
+	while (node != NULL) {
+		old_node = node;
+		node = *(node -> address_list -> item_addresses + 1);
+		forget_list (old_node -> address_list);
+		delete_node (&old_node);
+	}
+
+	linked_list = NULL;
+	ERASE (linked_list_address);
 }
 
 void attach_node_at_last (Linked_List *linked_list, Node *node) {
@@ -59,7 +75,10 @@ void attach_node_at_first (Linked_List *linked_list, Node *node) {
 
 	Node *new_node = duplicate_node (node);
 
-	if (new_node != NULL) {
+	if (
+		new_node != NULL																			// to check if new node is created
+		&& new_node -> type != N_Tree																// don't overwrite addresses for tree node
+	) {
 		*(new_node -> address_list -> item_addresses + 1) = linked_list -> first_node;
 	}
 
@@ -75,6 +94,11 @@ void attach_node_at_first (Linked_List *linked_list, Node *node) {
 }
 
 void display_linked_list (Linked_List *linked_list) {
+	if (linked_list == NULL) {
+		perror ("Linked List does not Exist to display!");
+		return;
+	}
+
 	printf ("<Linked List>(%d) :=\n", linked_list -> size);
 
 	if (linked_list -> size == 0) {
@@ -120,7 +144,7 @@ void detach_node_from_first (Linked_List *linked_list, bool node_delete_needed) 
 
 	if (node_delete_needed) {
 		forget_list (node -> address_list);
-		delete_node (node);
+		delete_node (&node);
 	}
 }
 
@@ -151,6 +175,6 @@ void detach_node_from_last (Linked_List *linked_list, bool node_delete_needed) {
 
 	if (node_delete_needed) {
 		forget_list (node -> address_list);
-		delete_node (node);
+		delete_node (&node);
 	}
 }

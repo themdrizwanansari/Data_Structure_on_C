@@ -12,7 +12,7 @@ typedef Linked_List Stack;
 // ---------- x ----------
 
 Stack* create_stack ();
-void delete_stack (Stack*);
+void delete_stack (Stack**);
 void display_stack (Stack*);
 void push (Stack*, Node*);
 Node* pop (Stack*);

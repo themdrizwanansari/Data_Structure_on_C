@@ -26,14 +26,20 @@ Data *create_data (Data_Type data_type, int block_size, void *address) {
 	return data;
 }
 
-void delete_data (Data *data) {
-	if (data != NULL) {
-		if (data -> address != NULL) {
-			free (data -> address);
-		}
-
-		free (data);
+void delete_data (Data **data_address) {
+	if (*data_address == NULL) {
+		//perror ("Data does not exist to delete!");
+		return;
 	}
+
+	Data *data = *data_address;
+
+	if (data -> address != NULL) {
+		ERASE (&data -> address);
+	}
+
+	data = NULL;
+	ERASE (data_address);
 }
 
 Data* duplicate_data (Data *data) {

@@ -8,15 +8,20 @@ Node *create_node (Node_Type type) {
 		node -> name = NULL;
 		node -> data = NULL;
 
-		switch (node -> type) {		// setting up address count
+		switch (node -> type) {		// setting up address list
 			case N_Undefined:
 				node -> address_list = NULL;
 				break;
 			case N_LinkedList:
 			case N_Stack:
 			case N_Queue:
+				node -> address_list = create_list (2);		// previous address, next address (default count = 2)
+				break;
 			case N_Tree:
-				node -> address_list = create_list (2);
+				node -> address_list = create_list (1);		// parent address + (Optional / zero or more) child addresses (default count = 1)
+				break;
+			case N_Graph:
+				node -> address_list = create_list (0);		// no addresses by default + add when connected with others (default count = 0)
 				break;
 			default:
 				break;
@@ -32,7 +37,7 @@ Node* duplicate_node (Node *node) {
 		exit (1);
 	}
 
-	Node *new_node = create_node (node -> type);//(Node*) malloc (sizeof (Node));
+	Node *new_node = create_node (node -> type);
 
 	if (new_node != NULL) {
 		new_node -> type = node -> type;
@@ -44,13 +49,20 @@ Node* duplicate_node (Node *node) {
 	return new_node;
 }
 
-void delete_node (Node *node) {
-	if (node != NULL) {
-		delete_string (node -> name);
-		delete_list (node -> address_list);
-		delete_data (node -> data);
-		free (node);
+void delete_node (Node **node_address) {
+	if (*node_address == NULL) {
+		perror ("Node doesn't exist to delete!");
+		return;
 	}
+
+	Node *node = *node_address;
+
+	delete_string (&node -> name);
+	delete_list (&node -> address_list);
+	delete_data (&node -> data);
+
+	node = NULL;
+	ERASE (node_address);
 }
 
 void set_node_name (Node *node, int length, char *name) {
@@ -65,8 +77,8 @@ void set_node_name (Node *node, int length, char *name) {
 
 void display_node (Node *node) {
 	if (node == NULL) {
-		perror ("Error! => Node doesn't exist.\n");
-		exit (1);
+		perror ("Error! => Node doesn't exist.");
+		return;
 	}
 
 	printf ("(");
@@ -76,8 +88,8 @@ void display_node (Node *node) {
 
 void display_node_details (Node *node) {
 	if (node == NULL) {
-		perror ("Display_Node->Error! => Node doesn't exist.\n");
-		exit (1);
+		perror ("Node doesn't exist to display");
+		return;
 	}
 
 	printf ("Type => [");

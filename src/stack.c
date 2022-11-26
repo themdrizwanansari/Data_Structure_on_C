@@ -4,8 +4,8 @@ Stack *create_stack () {
 	return create_linked_list ();
 }
 
-void delete_stack (Stack *stack) {
-	delete_linked_list (stack);
+void delete_stack (Stack **stack_address) {
+	delete_linked_list (stack_address);
 }
 
 void display_stack (Stack *stack) {

@@ -16,7 +16,7 @@ typedef struct LINKED_LIST {
 // ---------- x ----------
 
 Linked_List* create_linked_list ();
-void delete_linked_list (Linked_List*);
+void delete_linked_list (Linked_List**);
 void display_linked_list (Linked_List*);
 void linked_list_destructor (Linked_List*);
 void attach_node_at_first (Linked_List*, Node*);

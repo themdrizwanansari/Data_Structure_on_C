@@ -37,21 +37,23 @@ void forget_list (List *list) {
 	list -> item_addresses = NULL;
 }
 
-void delete_list (List *list) {
-	if (list == NULL) {
+void delete_list (List **list_address) {
+	if (*list_address == NULL) {
 		perror ("Can't Delete...List does not exist to Delete!\n");
-		exit (1);
+		return;
 	}
 
+	List *list = *list_address;
 	Data *data;
 	int i;
 
 	for (i = 0; i < list -> item_count; i++) {
 		data = *(list -> item_addresses + i);
-		delete_data (data);
+		delete_data (&data);
 	}
 
-	free (list);
+	list = NULL;
+	ERASE (list_address);
 }
 
 void add_to_list (List *list, void *data, bool data_copy_needed) {

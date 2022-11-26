@@ -14,6 +14,7 @@ typedef enum NODE_TYPE {
 	, N_Stack
 	, N_Queue
 	, N_Tree
+	, N_Graph
 } Node_Type;
 
 typedef struct NODE {
@@ -27,7 +28,7 @@ typedef struct NODE {
 
 Node* create_node (Node_Type);
 Node* duplicate_node (Node*);
-void delete_node (Node*);
+void delete_node (Node**);
 void set_node_name (Node*, int, char*);
 void display_node (Node*);
 void display_node_details (Node*);

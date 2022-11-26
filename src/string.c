@@ -40,14 +40,20 @@ String* duplicate_string (String *old_string) {
 	return new_string;
 }
 
-void delete_string (String *string) {
-	if (string != NULL) {
-		if (string -> address != NULL) {
-			free (string -> address);
-		}
-
-		free (string);
+void delete_string (String **string_address) {
+	if (*string_address == NULL) {
+		perror ("String is empty to delete!");
+		return;
 	}
+
+	String *string = *string_address;
+
+	if (string -> address != NULL) {
+		ERASE (&string -> address);
+	}
+
+	string = NULL;
+	ERASE (string_address);
 }
 
 void display_string_properties (String *string) {

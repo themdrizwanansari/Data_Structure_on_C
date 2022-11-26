@@ -14,11 +14,17 @@ typedef struct STRING {
 	char* address;
 } String;
 
+// updated version of free to avoid dangling pointer
+#define ERASE(address) {\
+	free (*address);\
+	*address = NULL;\
+}
+
 // ---------- x ----------
 
 String* create_string (int, char*);					// creates string object // pass NULL as argument if empty string to be created
 String* duplicate_string (String*);
-void delete_string (String*);						// frees string object from memory
+void delete_string (String**);						// frees string object from memory
 void display_string (String*);						// prints only string part
 void display_raw_string (int, char*);				// prints string // takes length and address pointer
 void display_string_properties (String*);			// prints whole description

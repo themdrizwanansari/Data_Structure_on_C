@@ -27,7 +27,7 @@ typedef struct DATA {
 
 Data* create_data (Data_Type, int, void*);
 Data* duplicate_data (Data*);
-void delete_data (Data*);
+void delete_data (Data**);
 void display_data (Data*);
 void display_data_properties (Data*);
 void display_binary_data (int, BYTE*);

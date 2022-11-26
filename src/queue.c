@@ -4,8 +4,8 @@ Queue *create_queue () {
 	return create_linked_list ();
 }
 
-void delete_queue (Queue *queue) {
-	delete_linked_list (queue);
+void delete_queue (Queue **queue_address) {
+	delete_linked_list (queue_address);
 }
 
 void display_queue (Queue *queue) {
