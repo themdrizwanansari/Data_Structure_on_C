@@ -1,15 +1,15 @@
-# Parser
-To parse various languages
+# Data Structure
+Custom C Library for data structure in C
 
-## Custom C Library Architecture
+___
 
-### Dependency Diagram =>
+## Dependency Diagram =>
 
 ![Image](./media/library_structure.png "Library Structure")
 
 ---
 
-## Data Structures & Utility Functions
+## Data Structures & Utility Functions =>
 
 ### **-: String.h :-**
 [=> _to store bunch of characters together in memory_]
