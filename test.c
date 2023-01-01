@@ -1,6 +1,4 @@
-#include "../lib/stack.h"
-#include "../lib/queue.h"
-#include "../lib/tree.h"
+#include "./lib/tree.h"
 
 
 int main (int argc, char *argv[]) {

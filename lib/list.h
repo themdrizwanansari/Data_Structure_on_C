@@ -14,13 +14,14 @@ typedef struct LIST {
 
 // ---------- x ----------
 
-List* create_list (int);
-List* duplicate_list (List*);
-void forget_list (List**);
-void delete_list (List**);
-void add_to_list (List*, void*, bool);
-void display_list (List*);
-void list_append (List*, int, void*);
-void display_list_addresses (List*);
+List* create_list (int item_count);
+List* duplicate_list (List *list);
+void forget_list (List **list_address);
+void delete_list (List **list_address);
+void add_to_list (List *list, void *data, bool data_copy_needed);
+void display_list (List *list);
+void display_list_addresses (List *list);
+int search_in_address_list (List *list, void *address);
+bool remove_address_from_list (List *list, void *address);
 
 #endif

@@ -26,11 +26,13 @@ typedef struct NODE {
 
 // ---------- x ----------
 
-Node* create_node (Node_Type);
-Node* duplicate_node (Node*);
-void delete_node (Node**);
-void set_node_name (Node*, int, char*);
-void display_node (Node*);
-void display_node_details (Node*);
+Node* create_node (Node_Type type);
+Node* duplicate_node (Node *node);
+void delete_node (Node **node_address);
+void set_node_name (Node *node, int name_length, char *name_address);
+void display_node (Node *node);
+void display_special_node (Node *node);
+void display_node_details (Node *node);
+void delete_temporary_node (Node **node_address);
 
 #endif

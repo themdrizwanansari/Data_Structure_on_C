@@ -36,7 +36,11 @@ void enqueue (Queue *queue, Node *node) {
 }
 
 Node *dequeue (Queue *queue) {
+	Node *x_node = queue -> first_node;
 	Node *node = duplicate_node (queue -> first_node);
+
+	forget_data (&(x_node -> data));
 	detach_node_from_first (queue, true);
+
 	return node;
 }

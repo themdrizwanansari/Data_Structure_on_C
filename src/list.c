@@ -1,6 +1,6 @@
 #include "../lib/list.h"
 
-List *create_list (int size) {
+List *create_list (int item_count) {
 	List *list = (List*) malloc (sizeof (List));
 
 	if (list == NULL) {
@@ -10,12 +10,12 @@ List *create_list (int size) {
 	list -> item_count = 0;
 	list -> item_addresses = NULL;
 
-	if (size < 10) {
-		while (size--) {
+	if (item_count < 10) {
+		while (item_count--) {
 			add_to_list (list, NULL, false);
 		}
 	} else {
-		list -> item_count = size;
+		list -> item_count = item_count;
 		list -> item_addresses = (void**) malloc (list -> item_count * sizeof (void*));
 	}
 
@@ -24,7 +24,7 @@ List *create_list (int size) {
 
 List* duplicate_list (List *old_list) {
 	if (old_list == NULL) {
-		// perror ("List does not exist to Duplicate!");
+		perror ("List does not exist to Duplicate!");
 		return NULL;
 	}
 
@@ -41,7 +41,7 @@ List* duplicate_list (List *old_list) {
 
 void forget_list (List **list_address) {
 	if (*list_address == NULL) {
-		// perror ("List does not exist to Forget!");
+		perror ("List does not exist to Forget!");
 		return;
 	}
 
@@ -54,7 +54,7 @@ void forget_list (List **list_address) {
 
 void delete_list (List **list_address) {
 	if (*list_address == NULL) {
-		// perror ("List does not exist to Delete!");
+		perror ("List does not exist to Delete!");
 		return;
 	}
 
@@ -74,7 +74,7 @@ void delete_list (List **list_address) {
 void add_to_list (List *list, void *data, bool data_copy_needed) {
 	if (list == NULL) {
 		perror ("List does not exist to add data!");
-		exit (1);
+		return;
 	}
 
 	list -> item_addresses = (void**) realloc (list -> item_addresses, (list -> item_count + 1) * sizeof (void*));
@@ -114,12 +114,12 @@ void display_list (List *list) {
 
 void display_list_addresses (List *list) {
 	if (list == NULL) {
-		// perror ("List does not exist to display!");
+		perror ("List does not exist to display!");
 		return;
 	}
 
 	if (list -> item_count == 0) {
-		// perror ("List is Empty to display!");
+		perror ("List is Empty to display!");
 		return;
 	}
 
@@ -139,4 +139,54 @@ void display_list_addresses (List *list) {
 	}
 
 	printf ("]\n");
+}
+
+bool remove_address_from_list (List *list, void *address) {	// this does not hard delete memory data, just forgets or removes the address from list
+	int index = search_in_address_list (list, address);
+
+	if (index < 1) {
+		return false;
+	}
+
+	int i;
+	void **ptr = list -> item_addresses + index;
+
+	for (i = index; i < list -> item_count - 1; i++) {
+		*ptr = *(ptr + 1);
+		++ptr;
+	}
+
+	-- (list -> item_count);
+	*ptr = NULL;
+
+	return true;
+}
+
+int search_in_address_list (List *list, void *address) {
+	if (list == NULL) {
+		perror ("List does not exist to search address in");
+		return -1;
+	}
+
+	if (list -> item_count == 0) {
+		perror ("List is empty to search address in");
+		return -1;
+	}
+
+	int i = 0;
+	void **p = list -> item_addresses;
+
+	for (i = 0; i < list -> item_count; i++) {
+		if (*p == address) {
+			break;
+		}
+
+		p = p + 1;
+	}
+
+	if (i == list -> item_count) {
+		i = -1;
+	}
+
+	return i;
 }

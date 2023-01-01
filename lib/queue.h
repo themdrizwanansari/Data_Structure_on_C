@@ -12,9 +12,9 @@ typedef Linked_List Queue;
 // ---------- x ----------
 
 Queue* create_queue ();
-void delete_queue (Queue**);
-void display_queue (Queue*);
-void enqueue (Queue*, Node*);
-Node* dequeue (Queue*);
+void delete_queue (Queue **queue_address);
+void display_queue (Queue *queue);
+void enqueue (Queue *queue, Node *node);
+Node* dequeue (Queue *queue);
 
 #endif

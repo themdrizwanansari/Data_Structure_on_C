@@ -12,9 +12,11 @@ typedef Linked_List Stack;
 // ---------- x ----------
 
 Stack* create_stack ();
-void delete_stack (Stack**);
-void display_stack (Stack*);
-void push (Stack*, Node*);
-Node* pop (Stack*);
+void delete_stack (Stack **stack_address);
+void display_stack (Stack *stack);
+void display_stack_details (Stack *stack);
+void display_stack_data (Stack *stack);
+void push (Stack *stack, Node *node);
+Node* pop (Stack *stack);
 
 #endif

@@ -25,6 +25,11 @@ void delete_tree (Tree **tree_address) {
 		return;
 	}
 
+	if ((*tree_address) -> node_count == 0) {
+		ERASE (tree_address);
+		return;
+	}
+
 	Tree *tree = *tree_address;
 	List *list = create_list (tree -> node_count);
 	int i, list_index = 0;
@@ -37,12 +42,8 @@ void delete_tree (Tree **tree_address) {
 	while (stack -> size > 0) {
 		x_node = pop (stack);
 		node = x_node -> data -> address;
-
 		*(list -> item_addresses + list_index++) = node;
-
-		forget_data (&(x_node -> data));
-		forget_list (&(x_node -> address_list));
-		delete_node (&x_node);
+		delete_temporary_node (&x_node);
 
 		i = node -> address_list -> item_count;
 
@@ -83,67 +84,29 @@ void display_tree (Tree *tree) {
 		return;
 	}
 
-	int i, child_count;
-	int depth = 0, *x;
+	int i, depth = 0;
 	Node *node, *child_node, *x_node;
-	Node *depth_node;
 	Stack *stack = create_stack ();
-	Stack *depth_stack = create_stack ();
 
 	stack -> name = create_string (10, "Node Stack");
-	depth_stack -> name = create_string (11, "Depth Stack");
 
 	node = get_root_node (tree);
 	push_tree_node_to_stack (stack, node);
-	push_depth_to_stack (depth_stack, 0);
 
 	while (stack -> size > 0) {
 		x_node = pop (stack);
 		node = x_node -> data -> address;
+		depth = get_tree_node_depth (tree, node);
+		delete_temporary_node (&x_node);
 
-		if (depth != 0) {
-			for (i = 1; i < depth; i++) {
-				printf ("\t|");
-			}
-
-			printf ("\n");
-
-			for (i = 2; i < depth; i++) {
-				printf ("\t|");
-			}
-
-			printf ("\t+--->");
-		}
-
+		print_node_depth_whitespace (depth);
 		display_node (node);
 		printf ("\n");
 
-		forget_data (&(x_node -> data));
-		forget_list (&(x_node -> address_list));
-		delete_node (&x_node);
-
-		x = depth_stack -> first_node -> data -> address;
-		-- *x;
-
 		i = node -> address_list -> item_count;
-		child_count = i - 1;
 
-		if (*x <= 0 && child_count == 0) {
-			depth_node = pop (depth_stack);
-			forget_data (&(depth_node -> data));
-			forget_list (&(depth_node -> address_list));
-			delete_node (&depth_node);
-		}
-
-		depth = depth_stack -> size;
-
-		if (child_count > 0) {
-			push_depth_to_stack (depth_stack, child_count);
-			depth = depth_stack -> size;
-		}
-
-		while (--i) {
-			if (i < 0) {
+		while (--i) {													
+			if (i <= 0) {
 				break;
 			}
 
@@ -153,7 +116,6 @@ void display_tree (Tree *tree) {
 	}
 
 	node = NULL;
-	delete_stack (&depth_stack);
 	delete_stack (&stack);
 }
 
@@ -187,7 +149,119 @@ Node* get_root_node (Tree *tree) {
 	return tree -> root_node;
 }
 
+void display_relation_with_root (Tree *tree, Node *node) {
+	if (tree == NULL) {
+		perror ("Tree does not exist to display Root!");
+		return;
+	}
+
+	if (node == NULL) {
+		perror ("Node does not exist to display Root!");
+		return;
+	}
+
+	if (node -> type != N_Tree) {
+		perror ("Given Node doesn't belong to a tree to display Root!");
+		return;
+	}
+
+	Stack *stack = create_stack ();
+	Node *stack_node;
+
+	do {
+		stack_node = create_node (N_Stack);
+		set_node_name (stack_node, node -> name -> length, node -> name -> address);
+		push (stack, stack_node);
+		delete_node (&stack_node);
+	} while ((node = get_parent_node (node)) != NULL);
+
+	display_linked_list (stack);
+	delete_stack (&stack);
+}
+
+int get_tree_node_depth (Tree *tree, Node *node) {
+	if (tree == NULL) {
+		perror ("Tree does not exist to get depth!");
+		return -1;
+	}
+
+	if (node == NULL) {
+		perror ("Node does not exist to get depth!");
+		return -1;
+	}
+
+	if (node -> type != N_Tree) {
+		perror ("Given Node doesn't belong to a tree get depth!");
+		return -1;
+	}
+
+	int depth = 0;
+	Node *parent_node;
+
+	while ((parent_node = get_parent_node (node)) != NULL) {
+		++ depth;
+		node = parent_node;
+	}
+
+	if (node != get_root_node (tree)) {
+		depth = -1;
+	}
+
+	node = NULL;
+	parent_node = NULL;
+
+	return depth;
+}
+
+void display_child_node_list (Node *node) {
+	if (node == NULL) {
+		perror ("Node does not exist to display Root!");
+		return;
+	}
+
+	if (node -> type != N_Tree) {
+		perror ("Given Node doesn't belong to a tree");
+		return;
+	}
+
+	printf ("[");
+
+	for (int i = 1; i < node -> address_list -> item_count; i++) {
+		display_node (*(node -> address_list -> item_addresses + i));
+
+		if (i < node -> address_list -> item_count - 1) {
+			printf (",");
+		}
+	}
+
+	printf ("]\n");
+}
+
+Node* get_parent_node (Node *node) {
+	if (node == NULL) {
+		perror ("Given Node doesn't exists");
+		return NULL;
+	}
+
+	if (node -> type != N_Tree) {
+		perror ("Given Node doesn't belong to a tree");
+		return NULL;
+	}
+
+	return *(node -> address_list -> item_addresses + 0);
+}
+
 Node* get_Nth_child_node (Node *parent_node, int n) {
+	if (parent_node == NULL) {
+		perror ("Given Node doesn't exists");
+		return NULL;
+	}
+
+	if (parent_node -> type != N_Tree) {
+		perror ("Given Node doesn't belong to a tree");
+		return NULL;
+	}
+
 	Node *child_node = NULL;
 
 	if (parent_node -> address_list -> item_count > n) {
@@ -197,8 +271,25 @@ Node* get_Nth_child_node (Node *parent_node, int n) {
 	return child_node;
 }
 
-Node* get_parent_node (Node *node) {
-	return NULL;
+Node* get_last_child_node (Node *parent_node) {
+	if (parent_node == NULL) {
+		perror ("Given Node doesn't exists");
+		return NULL;
+	}
+
+	if (parent_node -> type != N_Tree) {
+		perror ("Given Node doesn't belong to a tree");
+		return NULL;
+	}
+
+	int child_count = parent_node -> address_list -> item_count - 1;
+	Node *child_node = NULL;
+
+	if (child_count > 0) {
+		child_node = get_Nth_child_node (parent_node, child_count);
+	}
+
+	return child_node;
 }
 
 void append_child_node (Tree *tree, Node *parent_node, Node *child_node) {
@@ -224,15 +315,225 @@ void push_tree_node_to_stack (Stack *stack, Node *node) {
 	stack_node -> data = create_data (DT_Address, sizeof (void*), node);
 
 	push (stack, stack_node);
-	forget_data (&(stack_node -> data));
-	delete_node (&stack_node);
+	delete_temporary_node (&stack_node);
 }
 
-void push_depth_to_stack (Stack *depth_stack, int child_count) {
-	Node *depth_node = create_node (N_Stack);
-	depth_node -> data = create_data (DT_Integer, sizeof (int), &child_count);
+void enqueue_tree_node_to_queue (Queue *queue, Node *node) {
+	Node *queue_node = create_node (N_Queue);
+	queue_node -> name = duplicate_string (node -> name);
+	queue_node -> data = create_data (DT_Address, sizeof (void*), node);
 
-	push (depth_stack, depth_node);
-	forget_data (&(depth_node -> data));
-	delete_node (&depth_node);
+	enqueue (queue, queue_node);
+	delete_temporary_node (&queue_node);
+}
+
+Node* search_tree_by_node_name (Tree *tree, String *name) {
+	if (tree == NULL) {
+		perror ("Tree does not exist to search");
+		return NULL;
+	}
+
+	if (name == NULL) {
+		perror ("Search item does not exist to search into tree");
+		return NULL;
+	}
+
+	if (tree -> root_node == NULL) {
+		perror ("Tree does not have node to search");
+		return NULL;
+	}
+
+	Node *x_node, *node;
+	int i;
+	bool found = false;
+	void **address;
+	Queue *queue = create_queue ();
+
+	node = get_root_node (tree);
+	enqueue_tree_node_to_queue (queue, node);
+
+	while (queue -> size > 0) {
+		x_node = dequeue (queue);
+		node = x_node -> data -> address;
+		delete_temporary_node (&x_node);
+
+		if (are_strings_equal (node -> name, name)) {
+			found = true;
+			break;
+		}
+
+		i = node -> address_list -> item_count;
+		address = node -> address_list -> item_addresses;
+
+		while (--i) {													
+			if (i <= 0) {
+				break;
+			}
+
+			++address;
+			enqueue_tree_node_to_queue (queue, *(address));
+		}	
+	}
+
+	if (queue -> size > 0) {
+		x_node = queue -> first_node;
+		i = queue -> size;
+
+		while (i--) {
+			forget_data (&(x_node -> data));
+			x_node = *(x_node -> address_list -> item_addresses + 1);
+		}
+	}
+
+	delete_queue (&queue);
+
+	if (!found) {
+		node = NULL;
+	}
+
+	return node;
+}
+
+void display_sub_tree (Node *node) {
+	if (node == NULL) {
+		perror ("Node does not Exist to add to sub-tree to delete");
+		return;
+	}
+
+	if (node -> type != N_Tree) {
+		perror ("Node does not belong to a tree to add to sub-tree to delete");
+		return;
+	}
+
+	Tree *tree = create_tree ();
+	set_root_node (tree, node);
+	display_tree (tree);
+	tree -> root_node = NULL;
+	tree -> node_count = 0;
+	delete_tree (&tree);
+}
+
+int count_tree_nodes (Tree *tree) {
+	if (tree -> root_node == NULL) {
+		perror ("Tree does not exist to count nodes");
+		return -1;
+	}
+
+	if (tree -> root_node == NULL) {
+		perror ("Tree does not have any node to count");
+		return -1;
+	}
+	
+	int node_count = 0;
+	int i;
+	Node *node, *child_node, *x_node;
+	Stack *stack = create_stack ();
+
+	node = get_root_node (tree);
+	push_tree_node_to_stack (stack, node);
+
+	while (stack -> size > 0) {
+		x_node = pop (stack);
+		node = x_node -> data -> address;
+		delete_temporary_node (&x_node);
+
+		++node_count;
+		i = node -> address_list -> item_count;
+
+		while (--i) {
+			if (i < 0) {
+				break;
+			}
+
+			child_node = *(node -> address_list -> item_addresses + i);
+			push_tree_node_to_stack (stack, child_node);
+		}
+	}
+
+	delete_stack (&stack);
+	node = NULL;
+
+	return node_count;
+}
+
+Tree* create_sub_tree_from_node (Node *node) {
+	if (node == NULL) {
+		perror ("Node does not Exist to create sub-tree");
+		return NULL;
+	}
+
+	if (node -> type != N_Tree) {
+		perror ("Node does not belong to a tree to create sub-tree");
+		return NULL;
+	}
+
+	Tree *sub_tree = create_tree ();
+
+	if (sub_tree != NULL) {
+		set_root_node (sub_tree, node);
+		sub_tree -> node_count = count_tree_nodes (sub_tree);
+	}
+
+	return sub_tree;
+}
+
+void detach_node_from_parent (Node *node) {
+	if (node == NULL) {
+		perror ("Node does not belong to a tree to detach from parent");
+		return;
+	}
+
+	Node *parent_node = get_parent_node (node);
+
+	if (parent_node != NULL) {
+		remove_address_from_list (parent_node -> address_list, node);
+		*(node -> address_list -> item_addresses + 0) = NULL;
+	}
+
+	parent_node = NULL;
+}
+
+void delete_node_from_tree (Tree *tree, Node *node)  {
+	if (tree == NULL) {
+		perror ("Tree does not Exist to delete node from");
+		return;
+	}
+
+	if (node == NULL) {
+		perror ("Node does not Exist to delete from tree");
+		return;
+	}
+
+	if (node -> type != N_Tree) {
+		perror ("Node does not belong to a tree to delete from");
+		return;
+	}
+
+	Tree *sub_tree = create_sub_tree_from_node (node);
+
+	if (sub_tree != NULL && sub_tree -> node_count > 0) {
+		detach_node_from_parent (node);
+		tree -> node_count -= sub_tree -> node_count;
+		delete_tree (&sub_tree);
+	}
+
+	sub_tree = NULL;
+}
+
+void print_node_depth_whitespace (int depth) {
+	int i;
+
+	if (depth > 0) {
+		for (i = 0; i < depth; i++) {
+			printf ("\t|");
+		}
+
+		printf ("\n");
+
+		for (i = 1; i < depth; i++) {
+			printf ("\t|");
+		}
+
+		printf ("\t+--->");
+	}
 }

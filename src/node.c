@@ -77,7 +77,7 @@ void set_node_name (Node *node, int length, char *name) {
 
 void display_node (Node *node) {
 	if (node == NULL) {
-		perror ("Error! => Node doesn't exist.");
+		perror ("Node doesn't exist to display");
 		return;
 	}
 
@@ -86,9 +86,20 @@ void display_node (Node *node) {
 	printf (")");
 }
 
-void display_node_details (Node *node) {
+void display_special_node (Node *node) {
 	if (node == NULL) {
 		perror ("Node doesn't exist to display");
+		return;
+	}
+
+	printf ("**(");
+	display_string (node -> name);
+	printf (")**\n");
+}
+
+void display_node_details (Node *node) {
+	if (node == NULL) {
+		perror ("Node doesn't exist to display details");
 		return;
 	}
 
@@ -123,4 +134,13 @@ void display_node_details (Node *node) {
 	printf ("] ");
 	display_list_addresses (node -> address_list);
 	//printf ("\n");
+}
+
+void delete_temporary_node (Node **node_address) {
+	Node *node = *node_address;
+
+	forget_data (&(node -> data));
+	forget_list (&(node -> address_list));
+
+	ERASE (node_address);
 }

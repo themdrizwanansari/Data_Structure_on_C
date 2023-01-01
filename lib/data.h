@@ -16,6 +16,7 @@ typedef enum DATA_TYPE {
 	, DT_Integer
 	, DT_String
 	, DT_Address
+	, DT_Range
 } Data_Type;
 
 typedef struct DATA {
@@ -26,12 +27,14 @@ typedef struct DATA {
 
 // ---------- x ----------
 
-Data* create_data (Data_Type, int, void*);
-Data* duplicate_data (Data*);
-void delete_data (Data**);
-void forget_data (Data **);
-void display_data (Data*);
-void display_data_properties (Data*);
-void display_binary_data (int, BYTE*);
+Data* create_data (Data_Type data_type, int block_size, void *address);
+Data* duplicate_data (Data *data);
+void delete_data (Data **data_address);
+void forget_data (Data **data_address);
+void display_data (Data *data);
+void display_data_properties (Data *data);
+void display_binary_data (int size, BYTE *address);
+Data* create_range_data (int start, int end);
+void display_range_data (Data *data);
 
 #endif

@@ -16,12 +16,13 @@ typedef struct LINKED_LIST {
 
 // ---------- x ----------
 
-Linked_List* create_linked_list ();
-void delete_linked_list (Linked_List**);
-void display_linked_list (Linked_List*);
-void attach_node_at_first (Linked_List*, Node*);
-void attach_node_at_last (Linked_List*, Node*);
-void detach_node_from_first (Linked_List*, bool);
-void detach_node_from_last (Linked_List*, bool);
+Linked_List* create_linked_list (void);
+void delete_linked_list (Linked_List **linked_list_address);
+void display_linked_list (Linked_List *linked_list);
+void display_linked_list_details (Linked_List *linked_list);
+void attach_node_at_first (Linked_List *linked_list, Node *node);
+void attach_node_at_last (Linked_List *linked_list, Node *node);
+void detach_node_from_first (Linked_List *linked_list, bool node_delete_needed);
+void detach_node_from_last (Linked_List *linked_list, bool node_delete_needed);
 
 #endif

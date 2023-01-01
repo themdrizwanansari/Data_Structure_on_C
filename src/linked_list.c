@@ -35,6 +35,56 @@ void delete_linked_list (Linked_List **linked_list_address) {
 	ERASE (linked_list_address);
 }
 
+void display_linked_list (Linked_List *linked_list) {
+	if (linked_list == NULL) {
+		perror ("Linked List does not Exist to display!");
+		return;
+	}
+
+	if (linked_list -> size == 0) {
+		perror ("Linked List is Empty to display!");
+		return;
+	}
+
+	Node *node = linked_list -> first_node;
+
+	while (node != NULL) {
+		display_node (node);
+
+		node = *(node -> address_list -> item_addresses + 1);
+
+		if (node  != NULL) {
+			printf (" -> ");
+		}
+	}
+
+	printf ("\n");
+}
+
+void display_linked_list_details (Linked_List *linked_list) {
+	if (linked_list == NULL) {
+		perror ("Linked List does not Exist to display!");
+		return;
+	}
+
+	printf ("<Linked List>(%d) :=\n", linked_list -> size);
+
+	if (linked_list -> size == 0) {
+		perror ("Linked List is Empty!");
+		return;
+	}
+
+	Node *node = linked_list -> first_node;
+
+	while (node != NULL) {
+		printf ("\t-> ");
+		display_node_details (node);
+		node = *(node -> address_list -> item_addresses + 1);
+	}
+
+	printf ("\n");
+}
+
 void attach_node_at_last (Linked_List *linked_list, Node *node) {
 	if (linked_list == NULL) {
 		perror ("Empty list is given\n");
@@ -92,30 +142,6 @@ void attach_node_at_first (Linked_List *linked_list, Node *node) {
 	}
 
 	++ linked_list -> size;																			// not guranteed -- to be fixed
-}
-
-void display_linked_list (Linked_List *linked_list) {
-	if (linked_list == NULL) {
-		perror ("Linked List does not Exist to display!");
-		return;
-	}
-
-	printf ("<Linked List>(%d) :=\n", linked_list -> size);
-
-	if (linked_list -> size == 0) {
-		perror ("Linked List is Empty!");
-		return;
-	}
-
-	Node *node = linked_list -> first_node;
-
-	while (node != NULL) {
-		printf ("\t-> ");
-		display_node_details (node);
-		node = *(node -> address_list -> item_addresses + 1);
-	}
-
-	printf ("\n");
 }
 
 void detach_node_from_first (Linked_List *linked_list, bool node_delete_needed) {

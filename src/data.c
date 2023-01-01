@@ -1,6 +1,6 @@
 #include "../lib/data.h"
 
-Data *create_data (Data_Type data_type, int block_size, void *address) {
+Data* create_data (Data_Type data_type, int block_size, void *address) {
 	if (data_type == DT_Undefined || block_size == 0) {
 		return NULL;
 	}
@@ -32,7 +32,7 @@ Data *create_data (Data_Type data_type, int block_size, void *address) {
 
 void forget_data (Data **data_address) {
 	if (*data_address == NULL) {
-		// perror ("Data does not exist to delete!");
+		// perror ("Data does not exist to forget!");
 		return;
 	}
 
@@ -96,6 +96,9 @@ void display_data (Data *data) {
 		case DT_String:
 			display_raw_string (data -> size, data -> address);
 			break;
+		case DT_Range:
+			display_range_data (data);
+			break;
 		default:
 			break;
 	}
@@ -128,4 +131,31 @@ void display_binary_data (int size, BYTE *address) {
 	for (int i = 0; i < size; i++) {
 		printf ("%02x", *(address + i));
 	}
+}
+
+Data* create_range_data (int start, int end) {
+	int block_size = 2 * sizeof (int);
+	int *address = malloc (block_size);
+
+	*(address + 0) = start;
+	*(address + 1) = end;
+
+	Data *data = create_data (DT_Range, block_size, address);
+	ERASE (&address);
+
+	return data;
+}
+
+void display_range_data (Data *data) {
+	if (data == NULL) {
+		perror ("Range data does not exist to display");
+		return;
+	}
+
+	if (data -> type != DT_Range) {
+		perror ("Data is not identified as Range data to display");
+		return;
+	}
+
+	printf ("[%d, %d]\n", *((int*)(data -> address) + 0), *((int*)(data -> address) + 1));
 }

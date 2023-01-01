@@ -36,7 +36,79 @@ void display_stack (Stack *stack) {
 			printf ("\t|__*__| => ");
 		}
 
+		display_node (node);
+		printf ("\n");
+		node = *(node -> address_list -> item_addresses + 1);
+	}
+
+	printf ("\n");
+}
+
+void display_stack_details (Stack *stack) {
+	if (stack == NULL) {
+		perror ("Stack does not exist to display!");
+		return;
+	}
+
+	printf ("Stack (%d)", stack -> size);
+
+	if (stack -> name != NULL) {
+		printf (" <");
+		display_string (stack -> name);
+		printf (">");
+	}
+
+	printf (":=\n");
+
+	if (stack -> size == 0) {
+		perror ("Stack is Empty!");
+		return;
+	}
+
+	Node *node = stack -> first_node;
+
+	for (int i = 0; i < stack -> size; i++) {
+		if (i < stack -> size) {
+			printf ("\t|__*__| => ");
+		}
+
 		display_node_details (node);
+		node = *(node -> address_list -> item_addresses + 1);
+	}
+
+	printf ("\n");
+}
+
+void display_stack_data (Stack *stack) {
+	if (stack == NULL) {
+		perror ("Stack does not exist to display!");
+		return;
+	}
+
+	printf ("Stack (%d)", stack -> size);
+
+	if (stack -> name != NULL) {
+		printf (" <");
+		display_string (stack -> name);
+		printf (">");
+	}
+
+	printf (":=\n");
+
+	if (stack -> size == 0) {
+		perror ("Stack is Empty!");
+		return;
+	}
+
+	Node *node = stack -> first_node;
+
+	for (int i = 0; i < stack -> size; i++) {
+		if (i < stack -> size) {
+			printf ("\t|__*__| => ");
+		}
+
+		display_data (node -> data);
+		printf ("\n");
 		node = *(node -> address_list -> item_addresses + 1);
 	}
 

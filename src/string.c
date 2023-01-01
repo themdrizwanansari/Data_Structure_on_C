@@ -75,21 +75,14 @@ void display_string (String *string) {
 	display_raw_string (string -> length, string -> address);
 }
 
-void display_raw_string (int length, char *address) {
-	for (int i = 0; i < length; i++) {
-		printf ("%c", *(address + i));
-	}
-}
-
-char* char_array_to_pointer (int length, char *str) {
-	char *string = (char*) malloc (length);
-	string = memcpy (string, str, length);
-	return string;
-}
-
 void concatenate_strings (int count, ...) {}
 
 bool are_strings_equal (String *string1, String *string2)  {
+	if (string1 == NULL || string2 == NULL) {
+		perror ("One or Both given string does not exist");
+		return false;
+	}
+
 	bool result = true;
 	int i;
 
