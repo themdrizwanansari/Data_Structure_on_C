@@ -159,3 +159,46 @@ void display_range_data (Data *data) {
 
 	printf ("[%d, %d]\n", *((int*)(data -> address) + 0), *((int*)(data -> address) + 1));
 }
+
+bool are_data_equal (Data *data1, Data *data2) {
+	if (data1 == data2) {
+		return true;
+	}
+
+	if (data1 == NULL) {
+		// printf ("Data-1 is NULL\n");
+		return false;
+	}
+
+	if (data2 == NULL) {
+		// printf ("Data-2 is NULL\n");
+		return false;
+	}
+
+	bool result = false;
+	BYTE *ptr1, *ptr2;
+	int i;
+
+	if (data1 -> type == data2 -> type
+		&& data1 -> size == data2 -> size
+	) {
+		ptr1 = data1 -> address;
+		ptr2 = data2 -> address;
+
+		for (i = 0; i < data1 -> size; i++) {
+			if (*ptr1 != *ptr2) {
+				result = false;
+				break;
+			}
+
+			++ptr1;
+			++ptr2;
+		}
+
+		if (i == data1 -> size) {
+			result = true;
+		}
+	}
+
+	return result;
+}

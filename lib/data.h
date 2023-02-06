@@ -5,8 +5,6 @@
 
 #include "./string.h"
 
-#define BYTE unsigned char
-
 // ---------- x ----------
 
 typedef enum DATA_TYPE {
@@ -36,5 +34,6 @@ void display_data_properties (Data *data);
 void display_binary_data (int size, BYTE *address);
 Data* create_range_data (int start, int end);
 void display_range_data (Data *data);
+bool are_data_equal (Data *data1, Data *data2);
 
 #endif

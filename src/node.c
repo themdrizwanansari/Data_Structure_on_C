@@ -21,7 +21,7 @@ Node *create_node (Node_Type type) {
 				node -> address_list = create_list (1);		// parent address + (Optional / zero or more) child addresses (default count = 1)
 				break;
 			case N_Graph:
-				node -> address_list = create_list (0);		// no addresses by default + add when connected with others (default count = 0)
+				node -> address_list = create_list (0);		// should store route table (data as well as address to go to other adjacent node)
 				break;
 			default:
 				break;
@@ -68,7 +68,12 @@ void delete_node (Node **node_address) {
 void set_node_name (Node *node, int length, char *name) {
 	if (node == NULL) {
 		perror ("Error! => Node doesn't exist.\n");
-		exit (1);
+		return;
+	}
+
+	if (node -> type == N_Graph) {
+		perror ("Can't set graph node name manually!\n");
+		return;
 	}
 
 	String *string = create_string (length, name);
@@ -103,7 +108,7 @@ void display_node_details (Node *node) {
 		return;
 	}
 
-	printf ("Type : [");
+	printf ("Type : (");
 
 	switch (node -> type) {
 		case N_Undefined:
@@ -121,17 +126,20 @@ void display_node_details (Node *node) {
 		case N_Tree:
 			printf ("Tree Node");
 			break;
+		case N_Graph:
+			printf ("Graph Node");
+			break;
 		default:
 			break;
 	}
 
-	printf ("] Address : [");
+	printf (") Address : (");
 	printf ("%p", node);
-	printf ("] Name : [\"");
+	printf (") Name : (\"");
 	display_string (node -> name);
-	printf ("\"] Data : [");
+	printf ("\") Data : (");
 	display_data (node -> data);
-	printf ("] ");
+	printf (") ");
 	display_list_addresses (node -> address_list);
 	//printf ("\n");
 }

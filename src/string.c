@@ -1,5 +1,17 @@
 #include "../lib/string.h"
 
+void display_raw_string (int length, char *address) {
+	for (int i = 0; i < length; i++) {
+		printf ("%c", *(address + i));
+	}
+}
+
+char* char_array_to_pointer (int length, char *str) {
+	char *string = (char*) malloc (length);
+	string = memcpy (string, str, length);
+	return string;
+}
+
 String* create_string (int length, char *str) {
 	String *string = (String*) malloc (sizeof (String));
 
@@ -98,4 +110,27 @@ bool are_strings_equal (String *string1, String *string2)  {
 	}
 
 	return result;
+}
+
+String* append_integer_to_raw_string (char *str, int number) {
+	String *string = create_string (0, NULL);
+	int str_length = (str == NULL) ? 0 : strlen (str);
+
+	char *number_str_buffer = NULL;
+	ssize_t number_str_length = snprintf (NULL, 0, "%d", number);
+	number_str_buffer = malloc (number_str_length + 1);
+	snprintf (number_str_buffer, number_str_length + 1, "%d", number);
+
+	string -> length = str_length + number_str_length;
+	string -> address = malloc (string -> length);
+
+	char *ptr = string -> address;
+
+	ptr = memcpy (ptr, str, str_length);
+	ptr += str_length;
+	ptr = memcpy (ptr, number_str_buffer, number_str_length);
+
+	free (number_str_buffer);
+
+	return string;
 }

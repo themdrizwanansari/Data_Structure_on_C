@@ -17,3 +17,5 @@ gcc -Wall -o ../bin/stack.o -c ../src/stack.c
 gcc -Wall -o ../bin/queue.o -c ../src/queue.c
 
 gcc -Wall -o ../bin/tree.o -c ../src/tree.c
+
+gcc -Wall -o ../bin/graph.o -c ../src/graph.c

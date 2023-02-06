@@ -114,12 +114,12 @@ void display_list (List *list) {
 
 void display_list_addresses (List *list) {
 	if (list == NULL) {
-		perror ("List does not exist to display!");
+		//perror ("List does not exist to display!");
 		return;
 	}
 
 	if (list -> item_count == 0) {
-		perror ("List is Empty to display!");
+		//perror ("List is Empty to display!");
 		return;
 	}
 
@@ -138,7 +138,7 @@ void display_list_addresses (List *list) {
 		printf ("%p", address);
 	}
 
-	printf ("]\n");
+	printf ("]");
 }
 
 bool remove_address_from_list (List *list, void *address) {	// this does not hard delete memory data, just forgets or removes the address from list
