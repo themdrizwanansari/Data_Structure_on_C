@@ -1,0 +1,48 @@
+* {
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+	list-style: none;
+	box-sizing: border-box;
+}
+
+body {
+	position: absolute;
+}
+
+#container {
+	width: 100vw;
+	height: 100vh;
+}
+
+#details {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 300px;
+	height: 150px;
+	color: black;
+	font-size: 12pt;
+	font-family: 'Courier New', Courier, monospace;
+	background-color: lightgray;
+	border: 1px solid black;
+	text-align: center;
+	z-index: 10;
+}
+
+.hidden {
+	display: none;
+	opacity: 0;
+	visibility: hidden;
+}
+
+.vertex {
+	stroke: black;
+	stroke-width: 2px;
+	fill: lightgray;
+}
+
+.edge {
+	stroke: black;
+	stroke-width: 2px;
+}

@@ -216,6 +216,8 @@ int main (int argc, char *argv[]) {
 	delete_data (&weight);
 
 	display_graph_details (graph);
+	export_graph (graph);
+
 	delete_graph (&graph);
 
 	return 0;

@@ -184,6 +184,39 @@ void export_graph (Graph *graph) {
 		perror ("Graph does not exist to export!");
 		return;
 	}
+
+	FILE *fpo = fopen ("../web/data.js", "wb+");
+	int i;
+	Vertex *vertex;
+	Edge *edge;
+
+	fprintf (fpo, "const vertex_list = [");
+
+	for (i = 0; i < graph -> vertex_list -> item_count; i++) {
+		if (i > 0) {
+			fprintf (fpo, ", ");
+		}
+
+		vertex = *(graph -> vertex_list -> item_addresses + i);
+		fprintf (fpo, "\"%s\"", vertex -> name -> address);
+	}
+
+	fprintf (fpo, "];\n\nconst edge_list = [\n");
+
+	for (i = 0; i < graph -> edge_list -> item_count; i++) {
+		fprintf (fpo, "\t");
+
+		if (i > 0) {
+			fprintf (fpo, ", ");
+		}
+
+		edge = *(graph -> edge_list -> item_addresses + i);
+		fprintf (fpo, "[\"%s\", \"%s\", \"%s\", \"W%d\"]\n", edge -> name -> address, edge -> vertex1 -> name -> address, edge -> vertex2 -> name -> address, i);
+	}
+
+	fprintf (fpo, "];");
+
+	fclose (fpo);
 }
 
 Vertex* get_vertex_by_id_from_graph (Graph *graph, int id) {
