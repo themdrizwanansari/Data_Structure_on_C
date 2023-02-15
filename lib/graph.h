@@ -34,7 +34,7 @@ typedef struct GRAPH {
 Graph* create_graph (void);
 void delete_graph (Graph **graph_address);
 void display_graph (Graph *graph);
-void export_graph (Graph *graph);
+void export_graph_data_for_web_view (Graph *graph);
 void add_vertex_to_graph (Graph *graph, Vertex *vertex);
 Edge* create_edge_for_graph (Graph *graph, Vertex *vertex1, Vertex *vertex2, Data *weight);
 void display_edge (Edge *edge);

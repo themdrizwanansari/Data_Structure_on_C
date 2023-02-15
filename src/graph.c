@@ -148,7 +148,7 @@ void display_graph (Graph *graph) {
 		return;
 	}
 
-	export_graph (graph);
+	export_graph_data_for_web_view (graph);
 	printf ("Graph data exported to JSON file to open in a webpage instead\n");
 }
 
@@ -179,13 +179,13 @@ void display_graph_details (Graph *graph) {
 	printf ("\n]\n");
 }
 
-void export_graph (Graph *graph) {
+void export_graph_data_for_web_view (Graph *graph) {
 	if (graph == NULL) {
 		perror ("Graph does not exist to export!");
 		return;
 	}
 
-	FILE *fpo = fopen ("../web/data.js", "wb+");
+	FILE *fpo = fopen ("../web/graph/data.js", "wb+");
 	int i;
 	Vertex *vertex;
 	Edge *edge;

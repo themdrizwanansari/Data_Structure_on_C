@@ -80,6 +80,20 @@ void set_node_name (Node *node, int length, char *name) {
 	node -> name = string;
 }
 
+void set_node_data (Node *node, Data *data) {
+	if (node == NULL) {
+		perror ("Error! => Node doesn't exist to set data\n");
+		return;
+	}
+
+	if (data == NULL) {
+		perror ("Error! => Data doesn't exist to set to node\n");
+		return;
+	}
+
+	node -> data = duplicate_data (data);
+}
+
 void display_node (Node *node) {
 	if (node == NULL) {
 		perror ("Node doesn't exist to display");

@@ -537,3 +537,107 @@ void print_node_depth_whitespace (int depth) {
 		printf ("\t+--->");
 	}
 }
+
+void delete_tree_nodes_by_name (Tree *tree, String *node_name) {
+	if (tree == NULL) {
+		perror ("Tree does not exist to delete all nodes by name!");
+		return;
+	}
+
+	if (node_name == NULL) {
+		perror ("Name is not provided to delete all nodes by name!");
+		return;
+	}
+
+	Node *node;
+
+	while ((node = search_tree_by_node_name (tree, node_name)) != NULL) {
+		delete_node_from_tree (tree, node);
+	}
+}
+
+void display_tree_node (Node *node) {
+	display_node (node);
+	printf (" => [");
+	display_data (node -> data);
+	printf ("]");
+}
+
+void export_tree_data_for_web_view (Tree *tree) {
+	if (tree == NULL) {
+		perror ("Tree does not exist to export");
+		return;
+	}
+
+	FILE *fpo = fopen ("../web/tree/data.js", "wb+");
+
+	List *list = create_list (tree -> node_count);
+	int list_index = 0;
+	int i, linked_address_count, j;
+
+	Node *node, *child_node, *x_node;
+	Queue *queue = create_queue ();
+
+	node = get_root_node (tree);
+	enqueue_tree_node_to_queue (queue, node);
+
+	while (queue -> size > 0) {
+		x_node = dequeue (queue);
+		node = x_node -> data -> address;
+		*(list -> item_addresses + list_index++) = node;
+		delete_temporary_node (&x_node);
+
+		linked_address_count = node -> address_list -> item_count;
+
+		for (i = 1 ; i < linked_address_count; i++) {
+			child_node = *(node -> address_list -> item_addresses + i);
+			enqueue_tree_node_to_queue (queue, child_node);
+		}
+	}
+
+	delete_queue (&queue);
+
+	Node *parent_node = NULL;
+
+	fprintf (fpo, "const tree_node_list = [");
+
+	for (i = 0; i < list -> item_count; i++) {
+		node = *(list -> item_addresses + i);
+		parent_node = *(node -> address_list -> item_addresses + 0);
+
+		fprintf (fpo, "\n\t");
+
+		if (i > 0) {
+			fprintf (fpo, ", ");
+		}
+
+		fprintf (fpo, "[\"%s\", ", node -> name -> address);
+
+		if (parent_node == NULL) {
+			fprintf (fpo, "null");
+		} else {
+			fprintf (fpo, "\"%s\"", parent_node -> name -> address);
+		}
+
+		fprintf (fpo, ", [");
+
+		for (j = 1; j < node -> address_list -> item_count; j++) {
+			child_node = *(node -> address_list -> item_addresses + j);
+
+			if (j > 1) {
+				fprintf (fpo, ", ");
+			}
+
+			fprintf (fpo, "\"%s\"", child_node -> name -> address);
+		}
+
+		fprintf (fpo, "]]");
+	}
+
+	forget_list (&list);
+	delete_list (&list);
+
+	fprintf (fpo, "\n];");
+
+	fclose (fpo);
+}

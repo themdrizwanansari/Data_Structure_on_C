@@ -71,6 +71,7 @@ Data* duplicate_data (Data *data) {
 void display_data (Data *data) {
 	if (data == NULL) {
 		// perror ("Data does not exist to display!");
+		printf ("(nil)");
 		return;
 	}
 

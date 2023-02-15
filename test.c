@@ -114,10 +114,9 @@ int main (int argc, char *argv[]) {
 
 	delete_node (&node1);
 */
-/*
+
 	Node *node;
 	Node *p_node, *root_node;
-	//printf ("gotcha\n");
 	Tree *tree = create_tree ();
 
 	node = create_node (N_Tree);
@@ -175,9 +174,11 @@ int main (int argc, char *argv[]) {
 	delete_node (&node);
 
 	//display_tree (tree);
+	export_tree_data_for_web_view (tree);
+	display_tree (tree);
 	delete_tree (&tree);
-*/
 
+/*
 	Graph *graph = create_graph ();
 	Vertex *vertex1 = NULL, *vertex2 = NULL, *vertex3 = NULL;
 
@@ -216,9 +217,9 @@ int main (int argc, char *argv[]) {
 	delete_data (&weight);
 
 	display_graph_details (graph);
-	export_graph (graph);
+	export_graph_data_for_web_view (graph);
 
 	delete_graph (&graph);
-
+*/
 	return 0;
 }

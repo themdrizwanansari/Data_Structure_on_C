@@ -29,6 +29,7 @@ Node* get_last_child_node (Node *parent_node);
 Node* get_parent_node (Node *child_node);
 void append_child_node (Tree *tree, Node *parent_node, Node *child_node);
 void push_tree_node_to_stack (Stack *stack, Node *tree_node);
+void enqueue_tree_node_to_queue (Queue *queue, Node *node);
 void display_relation_with_root (Tree *tree, Node *node);
 void display_child_node_list (Node *parent_node);
 Node* search_tree_by_node_name (Tree *tree, String *node_name);
@@ -39,5 +40,8 @@ Tree* create_sub_tree_from_node (Node *node);
 void detach_node_from_parent (Node *child_node);
 void print_node_depth_whitespace (int node_depth);
 int get_tree_node_depth (Tree *tree, Node *tree_node);
+void delete_tree_nodes_by_name (Tree *tree, String *node_name);
+void display_tree_node (Node *node);
+void export_tree_data_for_web_view (Tree *tree);
 
 #endif
